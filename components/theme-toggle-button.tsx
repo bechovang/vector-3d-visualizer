@@ -15,7 +15,7 @@ export function ThemeToggleButton() {
 
   if (!mounted) {
     // Avoid hydration mismatch by rendering a placeholder or nothing on the server.
-    return <Button variant="ghost" size="icon" disabled className="h-9 w-9"></Button>
+    return <Button variant="ghost" size="icon" disabled className="h-12 w-12"></Button>
   }
 
   const toggleTheme = () => {
@@ -23,8 +23,8 @@ export function ThemeToggleButton() {
   }
 
   return (
-    <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme" className="h-9 w-9">
-      {theme === 'light' ? <Moon className="h-[1.2rem] w-[1.2rem]" /> : <Sun className="h-[1.2rem] w-[1.2rem]" />}
+    <Button variant="ghost" size="icon" onClick={toggleTheme} aria-label="Toggle theme" className="h-12 w-12">
+      {theme === 'light' ? <Moon className="h-6 w-6" /> : <Sun className="h-6 w-6" />}
     </Button>
   )
 } 

@@ -10,19 +10,15 @@ import type { Vector3D, OperationMode } from "@/app/page"
 interface VectorControlsProps {
   vectorU: Vector3D
   vectorV: Vector3D
-  mode: OperationMode
   onVectorUChange: (vector: Vector3D) => void
   onVectorVChange: (vector: Vector3D) => void
-  onModeChange: (mode: OperationMode) => void
 }
 
 export default function VectorControls({
   vectorU,
   vectorV,
-  mode,
   onVectorUChange,
   onVectorVChange,
-  onModeChange,
 }: VectorControlsProps) {
   const updateVectorU = (axis: keyof Vector3D, value: number) => {
     onVectorUChange({ ...vectorU, [axis]: value })
@@ -33,16 +29,16 @@ export default function VectorControls({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       {/* Vector U Controls */}
       <Card>
-        <CardHeader className="p-4">
-          <CardTitle className="text-purple-600 dark:text-purple-400 text-lg">Vector <strong>u</strong></CardTitle>
+        <CardHeader className="p-3">
+          <CardTitle className="text-purple-600 dark:text-purple-400 text-base font-semibold">Vector <strong>u</strong></CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 p-4">
+        <CardContent className="space-y-2 p-3">
           {(['x', 'y', 'z'] as const).map((axis) => (
-            <div key={axis} className="space-y-1.5">
-              <Label className="text-xs font-medium">
+            <div key={axis} className="space-y-1">
+              <Label className="text-[0.7rem] font-medium">
                 {axis.toUpperCase()}: {vectorU[axis].toFixed(1)}
               </Label>
               <div className="flex items-center space-x-2">
@@ -52,13 +48,13 @@ export default function VectorControls({
                   min={-5}
                   max={5}
                   step={0.1}
-                  className="flex-1 h-3"
+                  className="flex-1 h-2"
                 />
                 <Input
                   type="number"
                   value={vectorU[axis]}
                   onChange={(e) => updateVectorU(axis, Number.parseFloat(e.target.value) || 0)}
-                  className="w-16 h-8 text-sm"
+                  className="w-14 h-7 text-xs"
                   step={0.1}
                   min={-5}
                   max={5}
@@ -71,13 +67,13 @@ export default function VectorControls({
 
       {/* Vector V Controls */}
       <Card>
-        <CardHeader className="p-4">
-          <CardTitle className="text-red-600 dark:text-red-400 text-lg">Vector <strong>v</strong></CardTitle>
+        <CardHeader className="p-3">
+          <CardTitle className="text-red-600 dark:text-red-400 text-base font-semibold">Vector <strong>v</strong></CardTitle>
         </CardHeader>
-        <CardContent className="space-y-3 p-4">
+        <CardContent className="space-y-2 p-3">
           {(['x', 'y', 'z'] as const).map((axis) => (
-            <div key={axis} className="space-y-1.5">
-              <Label className="text-xs font-medium">
+            <div key={axis} className="space-y-1">
+              <Label className="text-[0.7rem] font-medium">
                 {axis.toUpperCase()}: {vectorV[axis].toFixed(1)}
               </Label>
               <div className="flex items-center space-x-2">
@@ -87,13 +83,13 @@ export default function VectorControls({
                   min={-5}
                   max={5}
                   step={0.1}
-                  className="flex-1 h-3"
+                  className="flex-1 h-2"
                 />
                 <Input
                   type="number"
                   value={vectorV[axis]}
                   onChange={(e) => updateVectorV(axis, Number.parseFloat(e.target.value) || 0)}
-                  className="w-16 h-8 text-sm"
+                  className="w-14 h-7 text-xs"
                   step={0.1}
                   min={-5}
                   max={5}
@@ -101,33 +97,6 @@ export default function VectorControls({
               </div>
             </div>
           ))}
-        </CardContent>
-      </Card>
-
-      {/* Operation Mode Selection */}
-      <Card>
-        <CardHeader className="p-4">
-          <CardTitle className="text-lg">Chế Độ Hiển Thị</CardTitle>
-        </CardHeader>
-        <CardContent className="p-4">
-          <RadioGroup value={mode} onValueChange={(value) => onModeChange(value as OperationMode)} className="space-y-1.5">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="cross-product" id="cross-product" />
-              <Label htmlFor="cross-product" className="text-sm">Tích có hướng (<strong>u</strong> × <strong>v</strong>)</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="projection-u-v" id="projection-u-v" />
-              <Label htmlFor="projection-u-v" className="text-sm">Hình chiếu <strong>v</strong> lên <strong>u</strong></Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="projection-v-u" id="projection-v-u" />
-              <Label htmlFor="projection-v-u" className="text-sm">Hình chiếu <strong>u</strong> lên <strong>v</strong></Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="dot-product" id="dot-product" />
-              <Label htmlFor="dot-product" className="text-sm">Tích vô hướng (<strong>u</strong> · <strong>v</strong>)</Label>
-            </div>
-          </RadioGroup>
         </CardContent>
       </Card>
     </div>

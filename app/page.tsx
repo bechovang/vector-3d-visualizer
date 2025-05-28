@@ -1,8 +1,9 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import VectorControls from "@/components/vector-controls"
 import ThreeScene from "@/components/three-scene"
 import CalculationDisplay from "@/components/calculation-display"
@@ -40,22 +41,39 @@ export default function VectorVisualizer() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Control Panel & Calculations */}
+          {/* Control Panel & Calculations - Combined */}
           <div className="lg:col-span-1 space-y-6">
-            <VectorControls
-              vectorU={vectorU}
-              vectorV={vectorV}
-              mode={mode}
-              onVectorUChange={setVectorU}
-              onVectorVChange={setVectorV}
-              onModeChange={setMode}
-            />
-            <CalculationDisplay vectorU={vectorU} vectorV={vectorV} mode={mode} calculations={calculations} />
+            <Card> {/* Outer Card for combined view */}
+              <CardHeader className="p-4">
+                <CardTitle className="text-xl">Bảng Điều Khiển & Kết Quả</CardTitle>
+              </CardHeader>
+              <CardContent className="p-4 space-y-6">
+                <VectorControls
+                  vectorU={vectorU}
+                  vectorV={vectorV}
+                  onVectorUChange={setVectorU}
+                  onVectorVChange={setVectorV}
+                />
+                <CalculationDisplay vectorU={vectorU} vectorV={vectorV} mode={mode} calculations={calculations} />
+              </CardContent>
+            </Card>
           </div>
 
           {/* 3D Scene */}
-          <div className="lg:col-span-2">
-            <Card className="p-4 h-[calc(100vh-12rem)] min-h-[400px] lg:min-h-[600px]">
+          <div className="lg:col-span-2 space-y-4">
+            <Select value={mode} onValueChange={(value) => setMode(value as OperationMode)}>
+              <SelectTrigger className="w-full md:w-[280px] mb-4">
+                <SelectValue placeholder="Chọn chế độ hiển thị" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="cross-product">Tích có hướng (u × v)</SelectItem>
+                <SelectItem value="projection-u-v">Hình chiếu v lên u</SelectItem>
+                <SelectItem value="projection-v-u">Hình chiếu u lên v</SelectItem>
+                <SelectItem value="dot-product">Tích vô hướng (u · v)</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            <Card className="p-4 h-[calc(100vh-16rem)] min-h-[400px] lg:min-h-[600px]">
               <ThreeScene vectorU={vectorU} vectorV={vectorV} mode={mode} calculations={calculations} />
             </Card>
           </div>

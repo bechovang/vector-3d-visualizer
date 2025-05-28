@@ -1,0 +1,70 @@
+{
+  "cross-product": [
+    {
+      "id": "cp1",
+      "question": "Tích có hướng của hai vector <strong>u</strong> = (1, 0, 0) và <strong>v</strong> = (0, 1, 0) là:",
+      "options": ["(0, 0, 1)", "(0, 0, -1)", "(1, 1, 0)", "(0, 1, 1)"],
+      "correctAnswer": 0,
+      "explanation": "<strong>u</strong> × <strong>v</strong> = (0×0 - 0×1, 0×0 - 1×0, 1×1 - 0×0) = (0, 0, 1)"
+    },
+    {
+      "id": "cp2",
+      "question": "Độ dài của tích có hướng <strong>u</strong> × <strong>v</strong> bằng:",
+      "options": [
+        "Diện tích tam giác tạo bởi <strong>u</strong> và <strong>v</strong>",
+        "Diện tích hình bình hành tạo bởi <strong>u</strong> và <strong>v</strong>",
+        "Chu vi hình bình hành tạo bởi <strong>u</strong> và <strong>v</strong>",
+        "Tích độ dài của <strong>u</strong> và <strong>v</strong>"
+      ],
+      "correctAnswer": 1,
+      "explanation": "|<strong>u</strong> × <strong>v</strong>| = |<strong>u</strong>||<strong>v</strong>|sin(θ) chính là diện tích hình bình hành"
+    }
+  ],
+  "projection": [
+    {
+      "id": "proj1",
+      "question": "Hình chiếu của vector <strong>a</strong> lên vector <strong>b</strong> có hướng:",
+      "options": [
+        "Cùng hướng với <strong>a</strong>",
+        "Cùng hướng với <strong>b</strong> hoặc ngược hướng với <strong>b</strong>",
+        "Vuông góc với <strong>b</strong>",
+        "Vuông góc với <strong>a</strong>"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Hình chiếu luôn nằm trên đường thẳng chứa vector được chiếu lên"
+    },
+    {
+      "id": "proj2",
+      "question": "Khi nào hình chiếu của <strong>a</strong> lên <strong>b</strong> có độ dài bằng |<strong>a</strong>|?",
+      "options": [
+        "Khi <strong>a</strong> và <strong>b</strong> vuông góc",
+        "Khi <strong>a</strong> và <strong>b</strong> cùng hướng hoặc ngược hướng",
+        "Khi |<strong>a</strong>| = |<strong>b</strong>|",
+        "Không bao giờ"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Khi góc giữa hai vector là 0° hoặc 180°, cos(θ) = ±1"
+    }
+  ],
+  "dot-product": [
+    {
+      "id": "dot1",
+      "question": "Tích vô hướng <strong>u</strong> · <strong>v</strong> = 0 có nghĩa là:",
+      "options": [
+        "Một trong hai vector bằng vector không",
+        "Hai vector vuông góc với nhau",
+        "Hai vector cùng hướng",
+        "Cả A và B đều đúng"
+      ],
+      "correctAnswer": 3,
+      "explanation": "<strong>u</strong> · <strong>v</strong> = 0 khi cos(θ) = 0 (vuông góc) hoặc khi một vector bằng 0"
+    },
+    {
+      "id": "dot2",
+      "question": "Góc giữa hai vector <strong>u</strong> = (1, 1, 0) và <strong>v</strong> = (1, -1, 0) là:",
+      "options": ["0°", "45°", "90°", "180°"],
+      "correctAnswer": 2,
+      "explanation": "<strong>u</strong> · <strong>v</strong> = 1×1 + 1×(-1) + 0×0 = 0, nên góc = 90°"
+    }
+  ]
+} 

@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import type { OperationMode } from "@/app/page"
 
@@ -7,94 +8,67 @@ interface TheoryDisplayProps {
   mode: OperationMode
 }
 
+interface TheoryContent {
+  title: string
+  content: string // HTML content as a string
+}
+
+interface TheoryData {
+  [key: string]: TheoryContent
+}
+
 export default function TheoryDisplay({ mode }: TheoryDisplayProps) {
-  const getTheoryContent = () => {
-    switch (mode) {
-      case "cross-product":
-        return {
-          title: "Tích Có Hướng (Cross Product)",
-          content: (
-            <div className="space-y-4">
-              <p>
-                Tích có hướng của hai vector <strong>u</strong> và <strong>v</strong> là một vector <strong>w</strong>
-                vuông góc với cả hai vector ban đầu.
-              </p>
+  const [theoryData, setTheoryData] = useState<TheoryData | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">Công thức:</h4>
-                <p className="font-mono"><strong>u</strong> × <strong>v</strong> = (u₂v₃ - u₃v₂, u₃v₁ - u₁v₃, u₁v₂ - u₂v₁)</p>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="font-semibold">Tính chất:</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm">
-                  <li>Kết quả vuông góc với cả <strong>u</strong> và <strong>v</strong></li>
-                  <li>Độ dài bằng diện tích hình bình hành tạo bởi <strong>u</strong> và <strong>v</strong></li>
-                  <li>Hướng tuân theo quy tắc bàn tay phải</li>
-                  <li><strong>u</strong> × <strong>v</strong> = -(<strong>v</strong> × <strong>u</strong>)</li>
-                </ul>
-              </div>
-            </div>
-          ),
+  useEffect(() => {
+    const fetchTheory = async () => {
+      try {
+        setLoading(true)
+        const response = await fetch("/data/theory.json")
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
         }
-
-      case "projection-u-v":
-      case "projection-v-u":
-        return {
-          title: "Hình Chiếu Vector (Vector Projection)",
-          content: (
-            <div className="space-y-4">
-              <p>
-                Hình chiếu của vector <strong>a</strong> lên vector <strong>b</strong> là thành phần của
-                <strong>a</strong> theo hướng của <strong>b</strong>.
-              </p>
-
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">Công thức:</h4>
-                <p className="font-mono">proj_<strong>b</strong>(<strong>a</strong>) = ((<strong>a</strong> · <strong>b</strong>) / |<strong>b</strong>|²) × <strong>b</strong></p>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="font-semibold">Ứng dụng:</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm">
-                  <li>Tính thành phần lực theo một hướng</li>
-                  <li>Tìm điểm gần nhất trên đường thẳng</li>
-                  <li>Phân tích chuyển động trong vật lý</li>
-                  <li>Xử lý ánh sáng trong đồ họa máy tính</li>
-                </ul>
-              </div>
-            </div>
-          ),
-        }
-
-      case "dot-product":
-        return {
-          title: "Tích Vô Hướng (Dot Product)",
-          content: (
-            <div className="space-y-4">
-              <p>Tích vô hướng của hai vector là một số thực biểu thị mức độ "giống nhau" về hướng của hai vector.</p>
-
-              <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
-                <h4 className="font-semibold mb-2">Công thức:</h4>
-                <p className="font-mono"><strong>u</strong> · <strong>v</strong> = u₁v₁ + u₂v₂ + u₃v₃ = |<strong>u</strong>||<strong>v</strong>|cos(θ)</p>
-              </div>
-
-              <div className="space-y-2">
-                <h4 className="font-semibold">Ý nghĩa:</h4>
-                <ul className="list-disc list-inside space-y-1 text-sm">
-                  <li>Dương: góc nhọn (cùng hướng)</li>
-                  <li>Âm: góc tù (ngược hướng)</li>
-                  <li>Bằng 0: vuông góc</li>
-                  <li>Dùng để tính góc giữa hai vector</li>
-                </ul>
-              </div>
-            </div>
-          ),
-        }
-
-      default:
-        return { title: "", content: null }
+        const data: TheoryData = await response.json()
+        setTheoryData(data)
+      } catch (e: any) {
+        setError(e.message || "Failed to load theory content.")
+        console.error("Error fetching theory data:", e)
+      } finally {
+        setLoading(false)
+      }
     }
+    fetchTheory()
+  }, [])
+
+  const getTheoryContent = () => {
+    if (!theoryData) return { title: "", content: "" }
+
+    let currentModeKey = mode as string;
+    if (mode === "projection-u-v" || mode === "projection-v-u") {
+      currentModeKey = "projection";
+    }
+    
+    return theoryData[currentModeKey] || { title: "Lý Thuyết", content: "<p>Nội dung không tồn tại.</p>" }
+  }
+
+  if (loading) {
+    return (
+      <Card>
+        <CardHeader><CardTitle>Đang tải...</CardTitle></CardHeader>
+        <CardContent><p>Đang tải nội dung lý thuyết...</p></CardContent>
+      </Card>
+    )
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader><CardTitle>Lỗi</CardTitle></CardHeader>
+        <CardContent><p>Không thể tải nội dung: {error}</p></CardContent>
+      </Card>
+    )
   }
 
   const { title, content } = getTheoryContent()
@@ -104,7 +78,8 @@ export default function TheoryDisplay({ mode }: TheoryDisplayProps) {
       <CardHeader>
         <CardTitle>{title}</CardTitle>
       </CardHeader>
-      <CardContent>{content}</CardContent>
+      {/* Render HTML content safely */}
+      <CardContent dangerouslySetInnerHTML={{ __html: content }} /> 
     </Card>
   )
 }
